@@ -61,7 +61,7 @@ struct ProgramState {
     Camera camera;
     bool CameraMouseMovementUpdateEnabled = true;
     glm::vec3 backpackPosition = glm::vec3(0.0f);
-    float backpackScale = 1.0f;
+    float backpackScale = 2.0f;
     PointLight pointLight;
     ProgramState()
             : camera(glm::vec3(0.0f, 0.0f, 3.0f)) {}
@@ -174,6 +174,10 @@ int main() {
         Model ourModel("resources/objects/pir/pir.obj");
     ourModel.SetShaderTextureNamePrefix("material.");
 
+    Model PlaneModel("resources/objects/plane/ITFKVZUC09SUAH59BWB1PENPK.obj");
+    PlaneModel.SetShaderTextureNamePrefix("material.");
+
+
     PointLight& pointLight = programState->pointLight;
     pointLight.position = glm::vec3(4.0f, 4.0, 0.0);
     pointLight.ambient = glm::vec3(1, 1, 1);
@@ -181,8 +185,8 @@ int main() {
     pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
 
     pointLight.constant = 1.0f;
-    pointLight.linear = 0.09f;
-    pointLight.quadratic = 0.032f;
+    pointLight.linear = 0.00f;
+    pointLight.quadratic = 0.00f;
 
 
     float skyboxVertices[] = {
@@ -305,12 +309,21 @@ int main() {
         ourShader.setMat4("view", view);
 
         // render the loaded model
-        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 model = glm::mat4(1.5f);
         model = glm::translate(model,
                                programState->backpackPosition); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
+
+
+        glm::mat4 model1 = glm::mat4(0.75f);
+        model1 = glm::rotate(model1, (float)glfwGetTime()/4, glm::vec3(0,1,0));
+        model1 = glm::translate(model1,glm::vec3(0,6,4)); // translate it down so it's at the center of the scene
+        model1 = glm::scale(model1, glm::vec3(1.0f));    // it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", model1);
+        PlaneModel.Draw(ourShader);
+
 
         //stbi_set_flip_vertically_on_load(false);
         // draw skybox as last

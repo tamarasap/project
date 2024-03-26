@@ -1,3 +1,0 @@
-The necessary texture has been provided for you.
-The models without texture just require simple diffuse shaders.
-Enjoy!
