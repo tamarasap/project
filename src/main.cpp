@@ -33,6 +33,9 @@ unsigned int loadCubemap(vector<std::string> faces);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+bool blinn=true;
+
+
 
 // camera
 
@@ -291,6 +294,9 @@ int main() {
 
         // don't forget to enable shader before setting uniforms
         ourShader.use();
+        ourShader.setVec3("viewPosition", programState->camera.Position);
+        ourShader.setFloat("material.shininess", 16.0f);
+        ourShader.setInt("blinn", blinn);
         pointLight.position = glm::vec3(2,2,2);
         ourShader.setVec3("pointLight.position", pointLight.position);
         ourShader.setVec3("pointLight.ambient", pointLight.ambient);
@@ -466,6 +472,8 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
     }
+    if (key == GLFW_KEY_M && action == GLFW_PRESS)
+        blinn = !blinn;
 }
 __attribute__((unused)) unsigned int loadCubemapTexture() {
 
