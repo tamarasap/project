@@ -67,7 +67,7 @@ struct ProgramState {
     float backpackScale = 2.0f;
     PointLight pointLight;
     ProgramState()
-            : camera(glm::vec3(0.0f, 0.0f, 3.0f)) {}
+            : camera(glm::vec3(0.0f, -0.0f, 0.0f)) {}
 
     void SaveToFile(std::string filename);
 
@@ -179,6 +179,9 @@ int main() {
 
     Model PlaneModel("resources/objects/plane/ITFKVZUC09SUAH59BWB1PENPK.obj");
     PlaneModel.SetShaderTextureNamePrefix("material.");
+
+    Model StoneModel("resources/objects/cube/cube.obj");
+    StoneModel.SetShaderTextureNamePrefix("material.");
 
 
     PointLight& pointLight = programState->pointLight;
@@ -324,7 +327,7 @@ int main() {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         // render the loaded model
-        glm::mat4 model = glm::mat4(1.5f);
+        glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model,
                                programState->backpackPosition); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
@@ -338,6 +341,13 @@ int main() {
         model1 = glm::scale(model1, glm::vec3(1.0f));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model1);
         PlaneModel.Draw(ourShader);
+
+        glm::mat4 model2 = glm::mat4(15.0f);
+        model2 = glm::translate(model2,
+                                glm::vec3(0,-2.8,-3)); // translate it down so it's at the center of the scene
+        model2 = glm::scale(model2, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
+        ourShader.setMat4("model", model2);
+        StoneModel.Draw(ourShader);
 
 
         //stbi_set_flip_vertically_on_load(false);
