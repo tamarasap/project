@@ -16,15 +16,22 @@ ESC - zatvaranje prozora
 
 B - blinn
 
+H- HDR
+
+B-BLOOM
+
+
 
 ## Obradjene teme
 * implementirane sve iz prvih 8 nedelja
 * `Blending`, `Face culling`, `Advanced lighting`
 * Oblast A: `Cubemaps`
+* Oblast B: `hdr i bloom`
+
 
 
 ## Modeli
-* [Piramida] (https://rigmodels.com/model.php?view=Pyramids-3d-model__399AN0GRZEZX0C05PAW5XV3VU&searchkeyword=temple%20obj&manualsearch=1)
+* * [Piramida](https://rigmodels.com/model.php?view=Pyramids-3d-model__399AN0GRZEZX0C05PAW5XV3VU&searchkeyword=temple%20obj&manualsearch=1)
 * [Avion](https://rigmodels.com/model.php?view=Airbus_Plane-3d-model__ITFKVZUC09SUAH59BWB1PENPK&searchkeyword=plane%20.obj%20free&manualsearch=1)
 * [skybox](preuzela od kolege)
 

@@ -81,6 +81,19 @@ public:
 
         if(Position.y < -0.35)
             Position.y = -0.35;
+        if(Position.x > 13.0 || Position.x <-8.0){
+            if(Position.x>13.0)
+                Position.x=13.0;
+            else if(Position.x < -8.0)
+                Position.x=-8.0;
+        }
+        if(Position.z > 15.0 || Position.z <-5.0){
+            if(Position.z>15.0)
+                Position.z=15.0;
+            else if(Position.z < -5.0)
+                Position.z=-5.0;
+        }
+
     }
 
     // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
