@@ -216,6 +216,7 @@ int main() {
     Model StoneModel("resources/objects/pod/floor.obj");
     StoneModel.SetShaderTextureNamePrefix("material.");
 
+    //hdr i bloom
     unsigned int hdrFBO;
     glGenFramebuffers(1, &hdrFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, hdrFBO);
@@ -271,7 +272,7 @@ int main() {
             std::cout << "Framebuffer not complete!" << std::endl;
     }
 
-
+//pointlight
     PointLight& pointLight = programState->pointLight;
     pointLight.position = glm::vec3(4.0f, 4.0, 0.0);
     pointLight.ambient = glm::vec3(0.8, 0.8, 0.8);
@@ -295,8 +296,8 @@ int main() {
     spotlight.direction = programState->camera.Front;
     spotlight.ambient = glm::vec3(0.5f);
     if(flashLight) {
-        spotlight.diffuse = glm::vec3(10.5f, 10.5f, 10.5f);
-        spotlight.specular = glm::vec3(10.5f, 10.5f, 10.5f);
+        spotlight.diffuse = glm::vec3(15.5f, 15.5f, 15.5f);
+        spotlight.specular = glm::vec3(15.5f, 15.5f, 15.5f);
     } else{
         spotlight.diffuse = glm::vec3(0.0f, 0.0f, 0.0f);
         spotlight.specular = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -307,6 +308,7 @@ int main() {
     spotlight.linear = 0.09f;
     spotlight.quadratic = 0.032f;
 
+    //shader
     ourShader.use();
     ourShader.setInt("diffuseTexture", 0);
 
@@ -428,7 +430,7 @@ int main() {
         ourShader.setVec3("viewPosition", programState->camera.Position);
         ourShader.setFloat("material.shininess", 16.0f);
         ourShader.setInt("blinn", blinn);
-       // ourShader.setInt("flashLight", flashLight);
+        ourShader.setInt("flashLight", flashLight);
 
 
         pointLight.position = glm::vec3(2,2,2);
@@ -474,7 +476,7 @@ int main() {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        // render the loaded model
+
         // render the loaded model
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model,
@@ -501,6 +503,7 @@ int main() {
         ourShader.setMat4("model", model2);
         StoneModel.Draw(ourShader);
 
+
         //stbi_set_flip_vertically_on_load(false);
         // draw skybox as last
         glDepthFunc(GL_LEQUAL);
@@ -520,7 +523,7 @@ int main() {
 
 
 
-
+// hdr i bloom
         bool horizontal = true, first_iteration = true;
         unsigned int amount = 5;
         shaderBloom.use();
