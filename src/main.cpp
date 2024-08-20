@@ -204,6 +204,8 @@ int main() {
     Shader skyboxShader("resources/shaders/cubemap.vs", "resources/shaders/cubemap.fs");
     Shader shaderHdr("resources/shaders/bloom.vs", "resources/shaders/bloom.fs");
     Shader shaderBloom("resources/shaders/blur.vs", "resources/shaders/blur.fs");
+    Shader lightShader("resources/shaders/light.vs", "resources/shaders/light.fs");
+
 
     // load models
     // -----------
@@ -215,6 +217,9 @@ int main() {
 
     Model StoneModel("resources/objects/pod/floor.obj");
     StoneModel.SetShaderTextureNamePrefix("material.");
+
+    Model SunModel("resources/objects/sun/13913_Sun_v2_l3.obj");
+    SunModel.SetShaderTextureNamePrefix("material.");
 
     //hdr i bloom
     unsigned int hdrFBO;
@@ -320,6 +325,9 @@ int main() {
     shaderHdr.use();
     shaderHdr.setInt("scene", 0);
     shaderHdr.setInt("bloomBlur", 1);
+
+    lightShader.use();
+    lightShader.setInt("diffuseTexture", 0);
 
 
     float skyboxVertices[] = {
@@ -495,6 +503,8 @@ int main() {
 
 
 
+
+
         glDisable(GL_CULL_FACE);
         glm::mat4 model2 = glm::mat4(10.0f);
         model2 = glm::translate(model2,
@@ -502,6 +512,43 @@ int main() {
         model2 = glm::scale(model2, glm::vec3(programState->pyramideScale));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model2);
         StoneModel.Draw(ourShader);
+
+        glm::mat4 model3 = glm::mat4(1.0f);
+        model3 = glm::translate(model3,glm::vec3(0,6,4));
+        model3 = glm::scale(model3, glm::vec3(0.03f));
+        lightShader.use();
+        lightShader.setMat4("projection", projection);
+        lightShader.setMat4("view", view);
+        lightShader.setVec3("viewPosition", programState->camera.Position);
+        lightShader.setFloat("material.shininess", 64.0f);
+        lightShader.setInt("blinn", blinn);
+
+        //pointlightsetup
+        pointLight.position = glm::vec3(4.0 * cos(currentFrame), 4.0f, 4.0 * sin(currentFrame));
+        lightShader.setVec3("pointLight.position", pointLight.position);
+        lightShader.setVec3("pointLight.ambient", pointLight.ambient);
+        lightShader.setVec3("pointLight.diffuse", pointLight.diffuse);
+        lightShader.setVec3("pointLight.specular", pointLight.specular);
+        lightShader.setFloat("pointLight.constant", pointLight.constant);
+        lightShader.setFloat("pointLight.linear", pointLight.linear);
+        lightShader.setFloat("pointLight.quadratic", pointLight.quadratic);
+
+        //dirlightsetup
+        lightShader.setVec3("dirLight.ambient",  directional.ambient);
+        lightShader.setVec3("dirLight.diffuse",  directional.diffuse);
+        lightShader.setVec3("dirLight.specular",  directional.specular);
+
+        glm::vec3 SunModelPosition = glm::vec3(model3[3]);
+        glm::vec3 cameraPosition = programState->camera.Position;
+
+        glm::vec3 direction = SunModelPosition - cameraPosition;
+        direction = glm::normalize(direction);
+
+        lightShader.setVec3("dirLight.direction",direction );
+
+        lightShader.setMat4("model", model3);
+        SunModel.Draw(lightShader);
+
 
 
         //stbi_set_flip_vertically_on_load(false);
