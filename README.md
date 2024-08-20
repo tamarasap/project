@@ -27,7 +27,7 @@ Projekat iz Računarske grafike
 
 
 ## Obradjene teme
-* implementirane sve iz prvih 8 nedelja
+* implementirano sve iz prvih 8 nedelja
 * `Blending`, `Face culling`, `Advanced lighting`
 * Oblast A: `Cubemaps`
 * Oblast B: `hdr i bloom`
